@@ -1,0 +1,32 @@
+name: Release notes
+on:
+  workflow_call:
+  push:
+    branches:
+      - master
+
+jobs:
+  add-release-to-github:
+    name: Add release to GitHub
+    runs-on: ubuntu-latest
+    outputs:
+      actualVersion: ${{ steps.semantic_release_info.outputs.version }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          token: ${{ secrets.MY_PAT }}
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          check-latest: true
+      - name: Install Dependency
+        run: npm i -g semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github @semantic-release/commit-analyzer @semantic-release/exec
+      - name: Version and Github Release
+        id: semantic_release_info
+        run: npx semantic-release --debug --verbose
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_PAT }}

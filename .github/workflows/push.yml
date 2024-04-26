@@ -1,0 +1,25 @@
+name: Test
+on:
+  workflow_call:
+  push:
+    tags:
+      - "v*"
+      - "v*.*"
+      - "v*.*.*"
+      - "v*.*.*.*"
+      - "v*.*.*.*.*"
+      - "v*.*.*.*.*.*"
+      - "v*.*.*.*.*.*.*"
+      - "v*.*.*.*.*.*.*.*"
+      - "v*.*.*.*.*.*.*.*.*"
+      - "v*.*.*.*.*.*.*.*.*.*"
+      - "v*"
+    branches:
+      - "**"
+jobs:
+  add-release-to-github:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
